@@ -1,0 +1,14 @@
+node_modules
+vite.config.ts
+*eslint*
+tsconfig*
+tailwind.config*
+env
+dist/
+build/
+.next/
+*.lock
+package-lock.json
+.git/
+.storybook/**
+next-env.d.ts
