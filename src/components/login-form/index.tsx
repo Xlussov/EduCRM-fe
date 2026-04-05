@@ -22,9 +22,10 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import { useLogin } from "@/hooks/use-auth"
 
 const formSchema = z.object({
-  phone: z.string().min(5, {
+  phone: z.string().min(2, {
     message: "Phone number is required",
   }),
   password: z.string().min(6, {
@@ -36,6 +37,8 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const loginMutation = useLogin();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -44,8 +47,8 @@ export function LoginForm({
     },
   })
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Form values:", values)
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    loginMutation.mutate(values);
   }
 
   return (
