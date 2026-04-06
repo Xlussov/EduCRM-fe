@@ -9,6 +9,10 @@ export default function proxy(request: NextRequest) {
   const path = request.nextUrl.pathname
   const isAuthPage = path.startsWith('/login')
 
+  if (path === '/') {
+    return NextResponse.redirect(new URL('/dashboard', request.url))
+  }
+
   if (!token && !isAuthPage) {
     return NextResponse.redirect(new URL('/login', request.url))
   }

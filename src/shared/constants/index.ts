@@ -1,0 +1,1 @@
+export { sidebarPaths } from "./sidebar";
