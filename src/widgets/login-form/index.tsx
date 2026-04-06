@@ -22,7 +22,7 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { useLogin } from "@/hooks/use-auth"
+import { useLogin } from "@/api/auth/mutations"
 
 const formSchema = z.object({
   phone: z.string().min(2, {

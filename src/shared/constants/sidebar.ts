@@ -13,7 +13,7 @@ export const sidebarPaths = [
   {
     title: 'Management',
     items: [
-      { title: 'Branches', url: ROUTES.BRANCHES, roles: [ROLES.SUPERADMIN] },
+      { title: 'Branches', url: ROUTES.BRANCHES, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Subjects', url: ROUTES.SUBJECTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Teachers', url: ROUTES.TEACHERS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Students', url: ROUTES.STUDENTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },

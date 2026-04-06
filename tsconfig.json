@@ -24,7 +24,9 @@
       "@hooks/*": ["./src/hooks/*"],
       "@api/*": ["./src/api/*"],
       "@constants/*": ["./src/constants/*"],
-      "@types/*": ["./src/types/*"]
+      "@types/*": ["./src/types/*"],
+      "@widgets/*": ["./src/widgets/*"],
+      "@shared/*": ["./src/shared/*"]
     },
   },
   "include": [

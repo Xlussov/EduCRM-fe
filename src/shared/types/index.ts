@@ -3,3 +3,5 @@ export type { ApiErrorDetail, ApiErrorResponse, ApiMessageResponse } from './err
 export type { Role } from "./roles";
 export { ROLES } from "./roles";
 export type { User } from './user';
+
+export type { BranchInfo } from './branches';

@@ -20,7 +20,7 @@ import {
 import { FC } from 'react';
 import { User } from '@/shared/types';
 import { RoleTag } from '../role-tag';
-import { useLogout } from '@/hooks/use-logut';
+import { useLogout } from '@/api/auth/mutations';
 
 type Props = {
   user: User;

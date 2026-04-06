@@ -15,13 +15,11 @@ import {
   SidebarMenuItem,
   SidebarRail,
 } from '@/components/ui/sidebar';
-import { NavUser } from '../nav-user';
-import { useUser } from '@/hooks/use-user';
+import { NavUser } from '../../components/nav-user';
 import { ComponentProps, useMemo } from 'react';
-import { NavUserSkeleton } from '../nav-user/navUserSkeleton';
 import { sidebarPaths } from '@/shared/constants';
-
-
+import { useUser } from '@/api/auth/queries';
+import { NavUserSkeleton } from '@/components/nav-user/NavUserSkeleton';
 
 export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   const { data: userData, isLoading } = useUser();

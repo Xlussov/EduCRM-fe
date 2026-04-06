@@ -1,10 +1,10 @@
-import { useMutation } from '@tanstack/react-query';
-import { api } from '@/api/axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
 import { ApiErrorResponse, LoginCredentials } from '@/shared/types';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { api } from '@/api/axios';
 
 export const useLogin = () => {
   const router = useRouter();
@@ -32,7 +32,31 @@ export const useLogin = () => {
           console.log('Fields errors:', backendError.details);
         }
       }
-      toast.error('Login failed!'); 
+      toast.error('Login failed!');
+    },
+  });
+};
+
+export const useLogout = () => {
+  const router = useRouter();
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const refreshToken = Cookies.get('refresh_token');
+
+      if (refreshToken) {
+        await api.post('/auth/logout', {
+          refresh_token: refreshToken,
+        });
+      }
+    },
+    onSettled: () => {
+      Cookies.remove('access_token');
+      Cookies.remove('refresh_token');
+      queryClient.clear();
+      router.push('/login');
+      toast.success('Logged out successfully!');
     },
   });
 };
