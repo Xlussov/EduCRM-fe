@@ -2,10 +2,9 @@ import { useMutation } from '@tanstack/react-query';
 import { api } from '@/api/axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { LoginCredentials } from '@/shared/types/auth';
-import { ApiErrorResponse } from '@/shared/types/error-response';
 import { AxiosError } from 'axios';
 import { toast } from 'sonner';
+import { ApiErrorResponse, LoginCredentials } from '@/shared/types';
 
 export const useLogin = () => {
   const router = useRouter();

@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react"
 
 import { VersionSwitcher } from "@/components/version-switcher"
@@ -14,6 +16,8 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 import Link from "next/link"
+import { NavUser } from "../nav-user"
+import { useUser } from "@/hooks/use-user"
 
 // This is sample data.
 const data = {
@@ -148,17 +152,15 @@ const data = {
 }
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
+  const { data: userData, isLoading } = useUser();
+  console.log(userData);
+
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        <VersionSwitcher
-          versions={data.versions}
-          defaultVersion={data.versions[0]}
-        />
-        {/* <SearchForm /> */}
+        {userData && <NavUser user={userData} />}
       </SidebarHeader>
       <SidebarContent>
-        {/* We create a SidebarGroup for each parent. */}
         {data.navMain.map((item) => (
           <SidebarGroup key={item.title}>
             <SidebarGroupLabel>{item.title}</SidebarGroupLabel>
