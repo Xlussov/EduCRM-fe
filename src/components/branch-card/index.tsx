@@ -45,7 +45,7 @@ export const BranchCard: FC<Props> = ({ branch }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem asChild disabled={branch.status === 'ARCHIVED'}>
               <Link href={`/branches/edit/${branch.id}`}>Edit branch</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

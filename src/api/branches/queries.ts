@@ -4,9 +4,21 @@ import { BranchInfo } from '@/shared/types';
 
 export const useBranches = () => {
   return useQuery({
-    queryKey: ['branches'],
+    queryKey: ['branches', 'all'], 
     queryFn: async () => {
       const { data } = await api.get<BranchInfo[]>('/branches');
+      return data;
+    },
+  });
+};
+
+export const useActiveBranches = () => {
+  return useQuery({
+    queryKey: ['branches', 'active'], 
+    queryFn: async () => {
+      const { data } = await api.get<BranchInfo[]>('/branches', {
+        params: { status: 'ACTIVE' } 
+      });
       return data;
     },
   });

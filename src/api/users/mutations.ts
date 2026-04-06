@@ -18,7 +18,7 @@ export const useCreateAdmin = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Admin created successfully');
-      router.push(ROUTES.STAFF);
+      router.push(ROUTES.ADMIN);
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to create admin'));
@@ -38,7 +38,7 @@ export const useCreateTeacher = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['users'] });
       toast.success('Teacher created successfully');
-      router.push(ROUTES.STAFF);
+      router.push(ROUTES.TEACHER);
     },
     onError: (error: unknown) => {
       toast.error(getErrorMessage(error, 'Failed to create teacher'));

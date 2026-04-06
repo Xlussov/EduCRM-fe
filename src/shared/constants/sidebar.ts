@@ -19,7 +19,8 @@ export const sidebarPaths = [
       { title: 'Students', url: ROUTES.STUDENTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Groups', url: ROUTES.GROUPS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Plans', url: ROUTES.PLANS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
-      { title: 'Staff', url: ROUTES.STAFF, roles: [ROLES.SUPERADMIN] },
+      { title: 'Admin', url: ROUTES.ADMIN, roles: [ROLES.SUPERADMIN] },
+      { title: 'Teacher', url: ROUTES.TEACHER, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
     ],
   },
   {
