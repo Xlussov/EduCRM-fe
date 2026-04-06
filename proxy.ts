@@ -1,4 +1,4 @@
-import { ALLOWED_PATHS } from '@/shared/routes';
+import { ALLOWED_PATHS, ROUTES } from '@/shared/routes';
 import { Role, ROLES } from '@/shared/types';
 import { decodeJwtPayload } from '@/shared/utils/jwt';
 import { NextResponse } from 'next/server'
@@ -7,18 +7,18 @@ import type { NextRequest } from 'next/server'
 export default function proxy(request: NextRequest) {
   const token = request.cookies.get('access_token')?.value
   const path = request.nextUrl.pathname
-  const isAuthPage = path.startsWith('/login')
+  const isAuthPage = path.startsWith(ROUTES.LOGIN)
 
   if (path === '/') {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url))
   }
 
   if (!token && !isAuthPage) {
-    return NextResponse.redirect(new URL('/login', request.url))
+    return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url))
   }
 
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL('/dashboard', request.url))
+    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url))
   }
 
   if (token && !isAuthPage) {
@@ -26,7 +26,7 @@ export default function proxy(request: NextRequest) {
     const userRole = payload?.role as Role;
 
     if (!userRole || !ALLOWED_PATHS[userRole]) {
-      const response = NextResponse.redirect(new URL('/login', request.url));
+      const response = NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
       response.cookies.delete('access_token');
       response.cookies.delete('refresh_token');
       return response;
@@ -49,7 +49,7 @@ export default function proxy(request: NextRequest) {
     }
 
     if (!isAllowed) {
-      return NextResponse.redirect(new URL('/', request.url));
+      return NextResponse.redirect(new URL(ROUTES.ROOT, request.url));
     }
   }
 

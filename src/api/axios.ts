@@ -1,3 +1,4 @@
+import { ROUTES } from '@/shared/routes';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
@@ -85,7 +86,7 @@ api.interceptors.response.use(
         Cookies.remove('access_token');
         Cookies.remove('refresh_token');
         
-        window.location.href = '/login';
+        window.location.href = ROUTES.LOGIN; // Redirect to login page
         
         return Promise.reject(refreshError);
       } finally {

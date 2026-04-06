@@ -14,6 +14,7 @@ export const ROUTES = {
   SCHEDULE: '/schedule',
   ATTENDANCE: '/attendance',
   REPORTS: '/reports',
+  STAFF: '/staff',
 } as const;
 
 export const ALLOWED_PATHS: Record<Role, string[]> = {

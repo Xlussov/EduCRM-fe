@@ -1,10 +1,11 @@
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/navigation';
-import { AxiosError } from 'axios';
 import { toast } from 'sonner';
-import { ApiErrorResponse, LoginCredentials } from '@/shared/types';
+import { LoginCredentials } from '@/shared/types';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/api/axios';
+import { getErrorMessage } from '@/shared/utils/error-handler';
+import { ROUTES } from '@/shared/routes';
 
 export const useLogin = () => {
   const router = useRouter();
@@ -18,21 +19,13 @@ export const useLogin = () => {
       Cookies.set('access_token', data.access_token, { path: '/' });
       Cookies.set('refresh_token', data.refresh_token, { path: '/' });
 
-      router.push('/dashboard');
+      router.push(ROUTES.ROOT);
       toast.success('Login successful!');
     },
-    onError: (error: AxiosError<ApiErrorResponse>) => {
-      const backendError = error.response?.data?.error;
-
-      if (backendError) {
-        console.log('Error code:', backendError.code);
-        console.log('Message:', backendError.message);
-
-        if (backendError.details) {
-          console.log('Fields errors:', backendError.details);
-        }
-      }
-      toast.error('Login failed!');
+    onError: error => {
+      toast.error(
+        getErrorMessage(error, 'Login failed. Please check your credentials and try again.'),
+      );
     },
   });
 };
@@ -55,7 +48,7 @@ export const useLogout = () => {
       Cookies.remove('access_token');
       Cookies.remove('refresh_token');
       queryClient.clear();
-      router.push('/login');
+      router.push(ROUTES.LOGIN);
       toast.success('Logged out successfully!');
     },
   });

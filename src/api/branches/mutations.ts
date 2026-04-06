@@ -4,6 +4,8 @@ import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { BranchFormValues } from '@/components/branch-form';
 import Cookies from 'js-cookie';
+import { getErrorMessage } from '@/shared/utils/error-handler';
+import { ROUTES } from '@/shared/routes';
 
 export const useCreateBranch = () => {
   const queryClient = useQueryClient();
@@ -27,10 +29,10 @@ export const useCreateBranch = () => {
       queryClient.invalidateQueries({ queryKey: ['me'] }); 
       
       toast.success('Branch created successfully');
-      router.push('/branches');
+      router.push(ROUTES.BRANCHES);
     },
-    onError: () => {
-      toast.error('Failed to create branch');
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to create branch'));
     },
   });
 };
@@ -48,10 +50,10 @@ export const useUpdateBranch = (id: string) => {
       queryClient.invalidateQueries({ queryKey: ['branches'] });
       queryClient.invalidateQueries({ queryKey: ['branches', id] });
       toast.success('Branch updated successfully');
-      router.push('/branches');
+      router.push(ROUTES.BRANCHES);
     },
-    onError: () => {
-      toast.error('Failed to update branch');
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to update branch'));
     },
   });
 };
@@ -69,10 +71,10 @@ export const useArchiveBranch = (id: string) => {
       queryClient.invalidateQueries({ queryKey: ['branches'] });
       queryClient.invalidateQueries({ queryKey: ['branches', id] });
       toast.success('Branch archived successfully');
-      router.push('/branches');
+      router.push(ROUTES.BRANCHES);
     },
-    onError: () => {
-      toast.error('Failed to archive branch');
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to archive branch'));
     },
   });
 };

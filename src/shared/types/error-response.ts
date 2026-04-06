@@ -7,7 +7,3 @@ export interface ApiErrorDetail {
 export interface ApiErrorResponse {
   error: ApiErrorDetail;
 }
-
-export interface ApiMessageResponse {
-  message: string;
-}
