@@ -1,13 +1,14 @@
 'use client';
 
 import Link from 'next/link';
-import { MoreHorizontal, MapPin } from 'lucide-react';
+import { MoreHorizontal, MapPin, Pencil } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
@@ -20,7 +21,7 @@ type Props = {
 
 export const BranchCard: FC<Props> = ({ branch }) => {
   return (
-    <Card className='flex flex-col justify-between' key={branch.id}>
+    <Card className="flex flex-col justify-between" key={branch.id}>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="flex flex-col gap-2">
           <CardTitle className="text-xl font-bold">{branch.name}</CardTitle>
@@ -45,7 +46,10 @@ export const BranchCard: FC<Props> = ({ branch }) => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuItem asChild disabled={branch.status === 'ARCHIVED'}>
+            <DropdownMenuLabel>Actions</DropdownMenuLabel>
+
+            <DropdownMenuItem disabled={branch.status === 'ARCHIVED'}>
+              <Pencil className="h-4 w-4" />
               <Link href={`/branches/edit/${branch.id}`}>Edit branch</Link>
             </DropdownMenuItem>
           </DropdownMenuContent>

@@ -1,4 +1,4 @@
-type Status = 'ACTIVE' | 'ARCHIVED';
+import { Status } from "./status";
 
 export type BranchInfo = {
   id: string;

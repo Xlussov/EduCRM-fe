@@ -47,6 +47,7 @@ export const useLogout = () => {
     onSettled: () => {
       Cookies.remove('access_token');
       Cookies.remove('refresh_token');
+      localStorage.removeItem('currentBranchId');
       queryClient.clear();
       router.push(ROUTES.LOGIN);
       toast.success('Logged out successfully!');
