@@ -1,4 +1,4 @@
-import CreateStudent from '@/widgets/create-student';
+import CreateStudent from '@/widgets/students/create-student';
 
 export default function Page() {
   return <CreateStudent />;

@@ -15,7 +15,6 @@ export const sidebarPaths = [
     items: [
       { title: 'Branches', url: ROUTES.BRANCHES, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Subjects', url: ROUTES.SUBJECTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
-      { title: 'Teachers', url: ROUTES.TEACHERS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Students', url: ROUTES.STUDENTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Groups', url: ROUTES.GROUPS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Plans', url: ROUTES.PLANS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },

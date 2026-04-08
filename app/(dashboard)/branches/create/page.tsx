@@ -1,4 +1,4 @@
-import CreateBranch from "@/widgets/create-branch";
+import CreateBranch from "@/widgets/branches/create-branch";
 
 export default function Page() {
   return (

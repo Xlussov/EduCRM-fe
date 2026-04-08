@@ -7,7 +7,6 @@ export const ROUTES = {
   MY_GROUPS: '/my-groups',
   BRANCHES: '/branches',
   SUBJECTS: '/subjects',
-  TEACHERS: '/teachers',
   STUDENTS: '/students',
   GROUPS: '/groups',
   PLANS: '/plans',
@@ -34,7 +33,6 @@ export const ALLOWED_PATHS: Record<Role, string[]> = {
     ROUTES.SCHEDULE,
     ROUTES.PLANS,
     ROUTES.ATTENDANCE,
-    ROUTES.TEACHERS,
     ROUTES.REPORTS,
     ROUTES.TEACHER
   ],
