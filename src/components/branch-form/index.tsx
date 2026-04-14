@@ -27,11 +27,14 @@ interface BranchFormProps {
   initialData?: BranchInfo;
   onSubmit: (data: BranchFormValues) => void;
   onArchive?: () => void;
+  onUnarchive?: () => void;
   isLoading?: boolean;
 }
 
-export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: BranchFormProps) => {
+export const BranchForm = ({ initialData, onSubmit, onArchive, onUnarchive, isLoading }: BranchFormProps) => {
   const isEditMode = !!initialData;
+  const isArchived = initialData?.status === "ARCHIVED";
+  const isDisabled = isLoading || isArchived;
 
   const form = useForm<BranchFormValues>({
     resolver: zodResolver(branchSchema),
@@ -52,7 +55,7 @@ export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: Bran
             <FormItem>
               <FormLabel>Branch Name</FormLabel>
               <FormControl>
-                <Input placeholder="Central Branch" disabled={isLoading} {...field} />
+                <Input placeholder="Central Branch" disabled={isDisabled} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -66,7 +69,7 @@ export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: Bran
             <FormItem>
               <FormLabel>City</FormLabel>
               <FormControl>
-                <Input placeholder="New York" disabled={isLoading} {...field} />
+                <Input placeholder="New York" disabled={isDisabled} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -80,7 +83,7 @@ export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: Bran
             <FormItem>
               <FormLabel>Address</FormLabel>
               <FormControl>
-                <Input placeholder="123 Main St" disabled={isLoading} {...field} />
+                <Input placeholder="123 Main St" disabled={isDisabled} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -88,11 +91,13 @@ export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: Bran
         />
 
         <div className="flex items-center gap-4 pt-4">
-          <Button type="submit" disabled={isLoading}>
-            {isEditMode ? "Save Changes" : "Create Branch"}
-          </Button>
+          {!isArchived && (
+            <Button type="submit" disabled={isLoading}>
+              {isEditMode ? "Save Changes" : "Create Branch"}
+            </Button>
+          )}
 
-          {isEditMode && initialData?.status !== "ARCHIVED" && (
+          {isEditMode && !isArchived && (
             <Button 
               type="button" 
               variant="destructive" 
@@ -100,6 +105,17 @@ export const BranchForm = ({ initialData, onSubmit, onArchive, isLoading }: Bran
               disabled={isLoading}
             >
               Archive
+            </Button>
+          )}
+
+          {isEditMode && isArchived && (
+            <Button 
+              type="button" 
+              variant="default" 
+              onClick={onUnarchive} 
+              disabled={isLoading}
+            >
+              Unarchive
             </Button>
           )}
         </div>

@@ -11,3 +11,6 @@ export type { AdminFormValues, TeacherFormValues } from './create-staff';
 export type { Status } from './status';
 
 export type { Student, StudentDetails, StudentFormValues } from './students';
+
+export type { Group, GroupDetails, GroupFormValues } from './groups';
+export  { groupSchema } from './groups';

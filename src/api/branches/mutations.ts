@@ -78,3 +78,22 @@ export const useArchiveBranch = (id: string) => {
     },
   });
 };
+
+export const useUnarchiveBranch = (id: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const response = await api.patch(`/branches/${id}/unarchive`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['branches'] });
+      queryClient.invalidateQueries({ queryKey: ['branches', id] });
+      toast.success('Branch unarchived successfully');
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to unarchive branch'));
+    },
+  });
+};

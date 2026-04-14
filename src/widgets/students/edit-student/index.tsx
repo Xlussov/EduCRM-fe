@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { StudentForm } from '@/components/student-form'; 
-import { useUpdateStudent, useArchiveStudent } from '@/api/students/mutations';
+import { useUpdateStudent, useArchiveStudent, useUnarchiveStudent } from '@/api/students/mutations';
 import { useStudentById } from '@/api/students/queries';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -17,6 +17,7 @@ export default function EditStudent() {
   
   const updateStudent = useUpdateStudent(id);
   const archiveStudent = useArchiveStudent(id);
+  const unarchiveStudent = useUnarchiveStudent(id);
 
   const onSubmit = (data: StudentFormValues) => {
     updateStudent.mutate(data);
@@ -26,7 +27,12 @@ export default function EditStudent() {
     archiveStudent.mutate();
   };
 
-  const isPending = updateStudent.isPending || archiveStudent.isPending;
+  const onUnarchive = () => {
+    unarchiveStudent.mutate();
+  };
+
+
+  const isPending = updateStudent.isPending || archiveStudent.isPending || unarchiveStudent.isPending;
 
   if (isFetching) return <div className="p-8">Loading...</div>;
 
@@ -47,6 +53,7 @@ export default function EditStudent() {
           defaultBranchId={student.branch_id}
           onSubmit={onSubmit}
           onArchive={onArchive}
+          onUnarchive={onUnarchive}
           isLoading={isPending}
         />
       )}

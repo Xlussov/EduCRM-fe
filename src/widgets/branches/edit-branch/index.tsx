@@ -2,7 +2,7 @@
 
 import { useParams } from 'next/navigation';
 import { BranchForm, BranchFormValues } from '@/components/branch-form';
-import { useUpdateBranch, useArchiveBranch } from '@/api/branches/mutations';
+import { useUpdateBranch, useArchiveBranch, useUnarchiveBranch } from '@/api/branches/mutations';
 import { useBranchById } from '@/api/branches/queries';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
@@ -15,6 +15,7 @@ export default function EditBranch() {
   const { data: branch, isLoading: isFetching } = useBranchById(id);
   const updateBranch = useUpdateBranch(id);
   const archiveBranch = useArchiveBranch(id);
+  const unarchiveBranch = useUnarchiveBranch(id);
 
   const onSubmit = (data: BranchFormValues) => {
     updateBranch.mutate(data);
@@ -24,7 +25,11 @@ export default function EditBranch() {
     archiveBranch.mutate();
   };
 
-  const isPending = updateBranch.isPending || archiveBranch.isPending;
+    const onUnarchive = () => {
+    unarchiveBranch.mutate();
+  };
+
+  const isPending = updateBranch.isPending || archiveBranch.isPending || unarchiveBranch.isPending;
 
   if (isFetching) return <div className="p-8">Loading...</div>;
 
@@ -44,6 +49,7 @@ export default function EditBranch() {
           initialData={branch}
           onSubmit={onSubmit}
           onArchive={onArchive}
+          onUnarchive={onUnarchive}
           isLoading={isPending}
         />
       )}

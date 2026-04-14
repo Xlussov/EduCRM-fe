@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useStudentById } from '@/api/students/queries';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { 
   ChevronLeft, 
   Pencil, 
@@ -17,6 +16,7 @@ import {
   User,
   Contact
 } from 'lucide-react';
+import { ArchivedPlug } from '@/components/archived-plug';
 
 export default function StudentInfoPage() {
   const params = useParams();
@@ -40,12 +40,7 @@ export default function StudentInfoPage() {
             <h2 className="text-3xl font-bold tracking-tight">
               {student.first_name} {student.last_name}
             </h2>
-            <Badge 
-              variant={student.status === 'ACTIVE' ? 'default' : 'outline'}
-              className={student.status === 'ARCHIVED' ? 'text-amber-500 border-amber-500' : ''}
-            >
-              {student.status}
-            </Badge>
+            {student.status === 'ARCHIVED' && <ArchivedPlug />}
           </div>
         </div>
 

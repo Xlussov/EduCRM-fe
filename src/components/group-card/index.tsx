@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MoreHorizontal, MapPin, Pencil } from 'lucide-react';
+import { MoreHorizontal, Eye, Pencil, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -13,22 +13,25 @@ import {
 } from '@/components/ui/dropdown-menu';
 
 import { FC } from 'react';
-import { BranchInfo } from '@/shared/types';
+import { Group } from '@/shared/types';
 import { ArchivedPlug } from '../archived-plug';
 
 type Props = {
-  branch: BranchInfo;
+  group: Group;
 };
 
-export const BranchCard: FC<Props> = ({ branch }) => {
-  const isArchived = branch.status === 'ARCHIVED';
+export const GroupCard: FC<Props> = ({ group }) => {
+  const isArchived = group.status === 'ARCHIVED';
+
   return (
-    <Card className="flex flex-col justify-between" key={branch.id}>
+    <Card className="flex flex-col justify-between" key={group.id}>
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="flex flex-col gap-2">
-          <CardTitle className="text-xl font-bold">{branch.name}</CardTitle>
+          <CardTitle className="text-xl font-bold">{group.name}</CardTitle>
+
           {isArchived && <ArchivedPlug />}
         </div>
+
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="h-8 w-8 p-0">
@@ -39,17 +42,27 @@ export const BranchCard: FC<Props> = ({ branch }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
-            <DropdownMenuItem >
-              <Pencil className="h-4 w-4" />
-              <Link href={`/branches/edit/${branch.id}`}>Edit branch</Link>
+            <DropdownMenuItem asChild>
+              <Link href={`/groups/${group.id}`} className="flex items-center cursor-pointer">
+                <Eye className="mr-2 h-4 w-4" />
+                Manage group
+              </Link>
+            </DropdownMenuItem>
+
+            <DropdownMenuItem asChild>
+              <Link href={`/groups/edit/${group.id}`} className="flex items-center cursor-pointer">
+                <Pencil className="mr-2 h-4 w-4" />
+                Edit group
+              </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
       </CardHeader>
+
       <CardContent>
         <div className="flex items-center text-sm text-muted-foreground mt-4">
-          <MapPin className="mr-2 h-4 w-4 opacity-70" />
-          {branch.address}, {branch.city}
+          <Users className="mr-2 h-4 w-4 opacity-70" />
+          {group.students_count || 0} Students
         </div>
       </CardContent>
     </Card>

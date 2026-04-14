@@ -1,10 +1,8 @@
+import EditGroup from "@/widgets/groups/edit-group";
+
 export default function Page() {  
   return ( 
-    <div>
-      <h1>Edit Group</h1>
-    </div>
+    <EditGroup/>
    )
 }
 
-
-// npm dlx shadcn@latest add checkbox

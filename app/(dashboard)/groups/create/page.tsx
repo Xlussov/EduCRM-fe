@@ -1,7 +1,7 @@
+import CreateGroup from "@/widgets/groups/create-group";
+
 export default function Page() {  
   return ( 
-    <div>
-      <h1>Create Group</h1>
-    </div>
+    <CreateGroup/>
    )
 }

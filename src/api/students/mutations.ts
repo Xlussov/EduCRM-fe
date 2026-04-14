@@ -55,7 +55,7 @@ export const useArchiveStudent = (id: string) => {
 
   return useMutation({
     mutationFn: async () => {
-      const response = await api.put(`/students/${id}/archive`); 
+      const response = await api.patch(`/students/${id}/archive`); 
       return response.data;
     },
     onSuccess: () => {
@@ -67,6 +67,26 @@ export const useArchiveStudent = (id: string) => {
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to archive student'));
+    },
+  });
+};
+
+export const useUnarchiveStudent = (id: string) => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async () => {
+      const response = await api.patch(`/students/${id}/unarchive`);
+      return response.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['students'] });
+      queryClient.invalidateQueries({ queryKey: ['students', id] });
+      
+      toast.success('Student unarchived successfully');
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to unarchive student'));
     },
   });
 };
