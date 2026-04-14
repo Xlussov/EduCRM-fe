@@ -5,7 +5,7 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BranchCard } from '@/components/branch-card';
 import { useBranches } from '@/api/branches/queries';
-import { BranchesListSkeleton } from './BranchesListSkeleton';
+import { ListSkeleton } from '@/components/list-skeleton';
 
 export const BranchesList = () => {
   const { data: branches, isLoading, isError } = useBranches();
@@ -23,7 +23,7 @@ export const BranchesList = () => {
       </div>
 
       {isLoading ? (
-        <BranchesListSkeleton />
+        <ListSkeleton />
       ) : isError ? (
         <div className="text-sm text-destructive">Failed to load branches.</div>
       ) : branches?.length === 0 ? (

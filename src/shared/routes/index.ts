@@ -13,8 +13,8 @@ export const ROUTES = {
   SCHEDULE: '/schedule',
   ATTENDANCE: '/attendance',
   REPORTS: '/reports',
-  ADMIN: '/admin/create',
-  TEACHER: '/teacher/create',
+  ADMINS: '/admins',
+  TEACHERS: '/teachers',
 } as const;
 
 export const ALLOWED_PATHS: Record<Role, string[]> = {
@@ -34,7 +34,7 @@ export const ALLOWED_PATHS: Record<Role, string[]> = {
     ROUTES.PLANS,
     ROUTES.ATTENDANCE,
     ROUTES.REPORTS,
-    ROUTES.TEACHER
+    ROUTES.TEACHERS
   ],
   [ROLES.SUPERADMIN]: ['*'],
 };

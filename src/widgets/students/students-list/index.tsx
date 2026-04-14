@@ -4,9 +4,9 @@ import Link from 'next/link';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { StudentCard } from '@/components/student-card'; 
-import { StudentsListSkeleton } from './StudentsListSkeleton';
 import { useStudents } from '@/api/students/queries';
 import { useBranchContext } from '@/providers/branch-provider';
+import { ListSkeleton } from '@/components/list-skeleton';
 
 //TODO create global switcher to branch 
 
@@ -26,7 +26,7 @@ export const StudentsList = () => {
       </div>
 
       {isLoading ? (
-        <StudentsListSkeleton />
+        <ListSkeleton />
       ) : isError ? (
         <div className="text-sm text-destructive">Failed to load students.</div>
       ) : students?.length === 0 ? (

@@ -20,6 +20,7 @@ import { Loader2 } from 'lucide-react';
 import { toast } from 'sonner';
 import { useSyncGroupStudents } from '@/api/groups/mutations';
 import { ArchivedPlug } from '../archived-plug';
+import { getErrorMessage } from '@/shared/utils/error-handler';
 
 const schema = z.object({
   student_ids: z.array(z.string()),
@@ -58,7 +59,7 @@ export const ManageGroupStudents = ({
       form.reset({ student_ids: data.student_ids });
       toast.success('Group students updated successfully');
     } catch (error) {
-      toast.error('Failed to update group students');
+      toast.error(getErrorMessage(error, 'Failed to update group students'));
     } finally {
       setIsSyncing(false);
     }

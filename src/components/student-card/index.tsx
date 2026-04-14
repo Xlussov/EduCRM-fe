@@ -1,5 +1,5 @@
-import { useRouter } from 'next/navigation';
-import { Badge } from '@/components/ui/badge';
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, Eye, Pencil, Phone, Mail } from 'lucide-react';
 import {

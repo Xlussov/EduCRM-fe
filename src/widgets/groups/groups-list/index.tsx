@@ -5,9 +5,9 @@ import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 import { useBranchContext } from '@/providers/branch-provider';
-import { GroupsListSkeleton } from './GroupsListSkeleton';
 import { GroupCard } from '@/components/group-card';
 import { useGroups } from '@/api/groups/queries';
+import { ListSkeleton } from '@/components/list-skeleton';
 
 
 export const GroupsList = () => {
@@ -26,7 +26,7 @@ export const GroupsList = () => {
       </div>
 
       {isLoading ? (
-        <GroupsListSkeleton />
+        <ListSkeleton />
       ) : isError ? (
         <div className="text-sm text-destructive">Failed to load groups.</div>
       ) : groups?.length === 0 ? (
