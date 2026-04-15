@@ -12,22 +12,37 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { FC } from 'react';
-import { Admin } from '@/shared/types';
 import { ArchivedPlug } from '../archived-plug';
+import { Teacher, Admin } from '@/shared/types/user';
 
 type Props = {
-  admin: Admin;
+  user: Teacher | Admin;
+  path: 'teachers' | 'admins';
 };
 
-export const AdminCard: FC<Props> = ({ admin }) => {
-  const isArchived = admin.status === 'ARCHIVED';
-  
+export const UserCard: FC<Props> = ({ user, path }) => {
+  const isArchived = user.status === 'ARCHIVED';
+
+  const renderBranches = () => {
+    if ('branches' in user) {
+      return user.branches && user.branches.length > 0
+        ? user.branches.map(b => b.name).join(', ')
+        : 'No branches assigned';
+    }
+    
+    if ('branch' in user && user.branch) {
+      return (user.branch as { name: string }).name || 'No branch assigned';
+    }
+
+    return 'No branch assigned';
+  };
+
   return (
     <Card className="flex flex-col justify-between">
       <CardHeader className="flex flex-row items-start justify-between space-y-0 pb-2">
         <div className="flex flex-col gap-2">
           <CardTitle className="text-xl font-bold">
-            {admin.first_name} {admin.last_name}
+            {user.first_name} {user.last_name}
           </CardTitle>
           {isArchived && <ArchivedPlug />}
         </div>
@@ -41,9 +56,9 @@ export const AdminCard: FC<Props> = ({ admin }) => {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
             <DropdownMenuItem asChild>
-              <Link href={`/admins/edit/${admin.id}`} className="flex items-center cursor-pointer">
+              <Link href={`/${path}/edit/${user.id}`} className="flex items-center cursor-pointer">
                 <Pencil className="mr-2 h-4 w-4" />
-                Edit admin
+                Edit user
               </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
@@ -53,14 +68,12 @@ export const AdminCard: FC<Props> = ({ admin }) => {
         <div className="flex flex-col gap-2 mt-4 text-sm text-muted-foreground">
           <div className="flex items-center gap-2">
             <Phone className="h-4 w-4 opacity-70" />
-            {admin.phone}
+            {user.phone}
           </div>
           <div className="flex items-start gap-2">
             <Building2 className="h-4 w-4 opacity-70 mt-0.5" />
             <span className="line-clamp-2">
-              {admin.branches.length > 0 
-                ? admin.branches.map(b => b.name).join(', ') 
-                : 'No branches assigned'}
+              {renderBranches()}
             </span>
           </div>
         </div>

@@ -39,3 +39,4 @@ export const ALLOWED_PATHS: Record<Role, string[]> = {
   [ROLES.SUPERADMIN]: ['*'],
 };
 
+export const GLOBAL_SWITCHER_HIDDEN_ROUTES = [ROUTES.BRANCHES, ROUTES.ADMINS, ROUTES.TEACHERS];

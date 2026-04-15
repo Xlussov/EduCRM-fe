@@ -8,6 +8,7 @@ import { AdminForm, AdminFormValues } from '@/components/admin-form';
 import { useActiveBranches } from '@/api/branches/queries';
 import { useAdminById } from '@/api/admins/queries';
 import { useUpdateAdmin, useArchiveAdmin, useUnarchiveAdmin } from '@/api/admins/mutations';
+import { Admin } from '@/shared/types';
 
 export default function EditAdmin() {
   const params = useParams();
@@ -53,7 +54,7 @@ const onSubmit = (data: AdminFormValues) => {
       <div className="max-w-2xl">
         <AdminForm
           branches={branches || []}
-          initialData={admin}
+          initialData={admin as Admin}
           onSubmit={onSubmit}
           onArchive={() => archiveAdmin.mutate()}
           onUnarchive={() => unarchiveAdmin.mutate()}

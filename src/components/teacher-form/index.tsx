@@ -1,9 +1,10 @@
 'use client';
 
-import React, { Fragment } from 'react';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Check, ChevronsUpDown, Loader2 } from 'lucide-react';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import {
@@ -14,30 +15,27 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
-  Combobox,
-  ComboboxChip,
-  ComboboxChips,
-  ComboboxChipsInput,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxItem,
-  ComboboxList,
-  ComboboxValue,
-  useComboboxAnchor,
-} from '@/components/ui/combobox';
-import { BranchInfo, Admin } from '@/shared/types';
-import { Loader2 } from 'lucide-react';
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/components/ui/command';
+import { BranchInfo, Teacher } from '@/shared/types';
+import { useState } from 'react';
 
 const baseSchema = z.object({
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   phone: z.string().min(1, 'Phone is required'),
   password: z.string().optional(),
-  branch_ids: z.array(z.string()).min(1, 'Select at least one branch'),
+  branch_id: z.string().min(1, 'Select a branch'),
 });
 
-export type AdminFormValues = z.infer<typeof baseSchema>;
+export type TeacherFormValues = z.infer<typeof baseSchema>;
 
 const getValidationSchema = (isEditMode: boolean) =>
   baseSchema.superRefine((data, ctx) => {
@@ -50,36 +48,36 @@ const getValidationSchema = (isEditMode: boolean) =>
     }
   });
 
-interface AdminFormProps {
+interface TeacherFormProps {
   branches: BranchInfo[];
-  initialData?: Admin;
-  onSubmit: (data: AdminFormValues) => void;
+  initialData?: Teacher;
+  onSubmit: (data: TeacherFormValues) => void;
   onArchive?: () => void;
   onUnarchive?: () => void;
   isLoading?: boolean;
 }
 
-export const AdminForm = ({
+export const TeacherForm = ({
   branches,
   initialData,
   onSubmit,
   onArchive,
   onUnarchive,
   isLoading,
-}: AdminFormProps) => {
-  const anchor = useComboboxAnchor();
+}: TeacherFormProps) => {
   const isEditMode = !!initialData;
   const isArchived = initialData?.status === 'ARCHIVED';
   const isDisabled = isLoading || isArchived;
+  const [open, setOpen] = useState(false);
 
-  const form = useForm<AdminFormValues>({
+  const form = useForm<TeacherFormValues>({
     resolver: zodResolver(getValidationSchema(isEditMode)),
     defaultValues: {
       first_name: initialData?.first_name || '',
       last_name: initialData?.last_name || '',
       phone: initialData?.phone || '',
       password: '',
-      branch_ids: initialData?.branches.map((b) => b.id) || [],
+      branch_id: initialData?.branch_id || '',
     },
   });
 
@@ -91,7 +89,7 @@ export const AdminForm = ({
             control={form.control}
             name="first_name"
             render={({ field }) => (
-               <FormItem>
+              <FormItem>
                 <FormLabel>First Name</FormLabel>
                 <FormControl>
                   <Input {...field} disabled={isDisabled} />
@@ -120,7 +118,7 @@ export const AdminForm = ({
             control={form.control}
             name="phone"
             render={({ field }) => (
-               <FormItem>
+              <FormItem>
                 <FormLabel>Phone</FormLabel>
                 <FormControl>
                   <Input {...field} type="tel" disabled={isDisabled} />
@@ -149,47 +147,58 @@ export const AdminForm = ({
 
         <FormField
           control={form.control}
-          name="branch_ids"
+          name="branch_id"
           render={({ field }) => (
             <FormItem className="flex flex-col">
-              <FormLabel>Assign Branches</FormLabel>
-              <FormControl>
-                <Combobox
-                  multiple
-                  autoHighlight
-                  items={branches}
-                  value={field.value}
-                  onValueChange={field.onChange}
-                  disabled={isDisabled}
-                >
-                  <ComboboxChips ref={anchor} className="w-full">
-                    <ComboboxValue>
-                      {(values: string[]) => (
-                        <Fragment>
-                          {values.map((val) => {
-                            const branchName = branches.find((b) => b.id === val)?.name || val;
-                            return <ComboboxChip key={val}>{branchName}</ComboboxChip>;
-                          })}
-                          <ComboboxChipsInput
-                            placeholder="Select branches..."
-                            disabled={isDisabled}
-                          />
-                        </Fragment>
+              <FormLabel>Assign Branch</FormLabel>
+              <Popover open={open} onOpenChange={setOpen}>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      disabled={isDisabled}
+                      className={cn(
+                        'w-full justify-between',
+                        !field.value && 'text-muted-foreground',
                       )}
-                    </ComboboxValue>
-                  </ComboboxChips>
-                  <ComboboxContent anchor={anchor}>
-                    <ComboboxEmpty>No branch found.</ComboboxEmpty>
-                    <ComboboxList>
-                      {(item: BranchInfo) => (
-                        <ComboboxItem key={item.id} value={item.id}>
-                          {item.name}
-                        </ComboboxItem>
-                      )}
-                    </ComboboxList>
-                  </ComboboxContent>
-                </Combobox>
-              </FormControl>
+                    >
+                      {field.value
+                        ? branches.find(b => b.id === field.value)?.name
+                        : 'Select a branch'}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-[400px] p-0">
+                  <Command>
+                    <CommandInput placeholder="Search branch..." />
+                    <CommandList>
+                      <CommandEmpty>No branch found.</CommandEmpty>
+                      <CommandGroup>
+                        {branches.map(branch => (
+                          <CommandItem
+                            value={branch.name}
+                            key={branch.id}
+                            onSelect={() => {
+                              form.setValue('branch_id', branch.id, { shouldValidate: true });
+                              setOpen(false);
+                            }}
+                          >
+                            <Check
+                              className={cn(
+                                'mr-2 h-4 w-4',
+                                branch.id === field.value ? 'opacity-100' : 'opacity-0',
+                              )}
+                            />
+                            {branch.name}
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </CommandList>
+                  </Command>
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
@@ -199,7 +208,7 @@ export const AdminForm = ({
           {!isArchived && (
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              {isEditMode ? 'Save Changes' : 'Create Admin'}
+              {isEditMode ? 'Save Changes' : 'Create Teacher'}
             </Button>
           )}
 
