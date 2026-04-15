@@ -8,8 +8,6 @@ import { useStudents } from '@/api/students/queries';
 import { useBranchContext } from '@/providers/branch-provider';
 import { ListSkeleton } from '@/components/list-skeleton';
 
-//TODO create global switcher to branch 
-
 export const StudentsList = () => {
   const { currentBranchId } = useBranchContext();
   const { data: students, isLoading, isError } = useStudents(currentBranchId || '');

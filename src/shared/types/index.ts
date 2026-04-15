@@ -14,3 +14,5 @@ export type { Student, StudentDetails, StudentFormValues } from './students';
 
 export type { Group, GroupDetails, GroupFormValues } from './groups';
 export  { groupSchema } from './groups';
+
+export type { SubjectInfo } from './subjects';
