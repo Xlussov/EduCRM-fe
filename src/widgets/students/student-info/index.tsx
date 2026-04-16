@@ -4,19 +4,11 @@ import { useParams } from 'next/navigation';
 import Link from 'next/link';
 import { useStudentById } from '@/api/students/queries';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { 
-  ChevronLeft, 
-  Pencil, 
-  Phone, 
-  Mail, 
-  MapPin, 
-  Calendar, 
-  Users, 
-  User,
-  Contact
-} from 'lucide-react';
+import { ChevronLeft, Pencil } from 'lucide-react';
 import { ArchivedPlug } from '@/components/archived-plug';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { StudentInfoCard } from '@/components/student-info-card';
+import { StudentSubscriptions } from '@/components/student-subscriptions';
 
 export default function StudentInfoPage() {
   const params = useParams();
@@ -52,76 +44,20 @@ export default function StudentInfoPage() {
         </Button>
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <User className="h-5 w-5 text-muted-foreground" />
-              Student Information
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-3 text-sm">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Full Name:</span>
-              <span className="text-muted-foreground">{student.first_name} {student.last_name}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Calendar className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Date of Birth:</span>
-              <span className="text-muted-foreground">{student.dob}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Phone className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Phone:</span>
-              <span className="text-muted-foreground">{student.phone}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Mail className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Email:</span>
-              <span className="text-muted-foreground">{student.email || '—'}</span>
-            </div>
-            <div className="flex items-start gap-3 text-sm">
-              <MapPin className="h-4 w-4 text-muted-foreground mt-0.5" />
-              <span className="font-medium w-28">Address:</span>
-              <span className="text-muted-foreground">{student.address}</span>
-            </div>
-          </CardContent>
-        </Card>
+      <Tabs defaultValue="profile" className="w-full">
+        <TabsList className="mb-6">
+          <TabsTrigger value="profile">Profile</TabsTrigger>
+          <TabsTrigger value="subscriptions">Subscriptions</TabsTrigger>
+        </TabsList>
 
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-lg">
-              <Users className="h-5 w-5 text-muted-foreground" />
-              Parent / Guardian
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex items-center gap-3 text-sm">
-              <User className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Full Name:</span>
-              <span className="text-muted-foreground">{student.parent_name}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Contact className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Relationship:</span>
-              <span className="text-muted-foreground">{student.parent_relationship}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Phone className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Phone:</span>
-              <span className="text-muted-foreground">{student.parent_phone}</span>
-            </div>
-            <div className="flex items-center gap-3 text-sm">
-              <Mail className="h-4 w-4 text-muted-foreground" />
-              <span className="font-medium w-28">Email:</span>
-              <span className="text-muted-foreground">{student.parent_email || '—'}</span>
-            </div>
-          </CardContent>
-        </Card>
+        <TabsContent value="profile" className="space-y-4">
+          <StudentInfoCard student={student} />
+        </TabsContent>
 
-      </div>
+        <TabsContent value="subscriptions" className="space-y-4">
+          <StudentSubscriptions studentId={student.id} branchId={student.branch_id} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
