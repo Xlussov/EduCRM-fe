@@ -16,3 +16,5 @@ export type { Group, GroupDetails, GroupFormValues } from './groups';
 export  { groupSchema } from './groups';
 
 export type { SubjectInfo } from './subjects';
+
+export type { PlanType, PlanPricingGrid, PlanSubject, PlanInfo } from './plans';

@@ -18,14 +18,18 @@ import {
 import { NavUser } from '../../components/nav-user';
 import { ComponentProps, useMemo } from 'react';
 import { sidebarPaths } from '@/shared/constants';
-import { useUser } from '@/api/auth/queries';
 import { NavUserSkeleton } from '@/components/nav-user/NavUserSkeleton';
+import { User } from '@/shared/types';
 
-export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
-  const { data: userData, isLoading } = useUser();
+interface AppSidebarProps extends ComponentProps<typeof Sidebar> {
+  user: User | undefined;
+  isLoading: boolean;
+}
+
+export function AppSidebar({ user, isLoading, ...props }: AppSidebarProps) {
   const pathname = usePathname();
 
-  const userRole = userData?.role;
+  const userRole = user?.role;
 
   const filteredNav = useMemo(() => {
     if (!userRole) return [];
@@ -43,7 +47,7 @@ export function AppSidebar({ ...props }: ComponentProps<typeof Sidebar>) {
   return (
     <Sidebar {...props}>
       <SidebarHeader>
-        {userData ? <NavUser user={userData} /> : isLoading ? <NavUserSkeleton /> : null}
+        {user ? <NavUser user={user} /> : isLoading ? <NavUserSkeleton /> : null}
       </SidebarHeader>
 
       <SidebarContent>
