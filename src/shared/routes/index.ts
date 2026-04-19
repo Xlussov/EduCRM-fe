@@ -15,6 +15,7 @@ export const ROUTES = {
   REPORTS: '/reports',
   ADMINS: '/admins',
   TEACHERS: '/teachers',
+  LESSONS: '/lessons',
 } as const;
 
 export const ALLOWED_PATHS: Record<Role, string[]> = {
@@ -34,9 +35,10 @@ export const ALLOWED_PATHS: Record<Role, string[]> = {
     ROUTES.PLANS,
     ROUTES.ATTENDANCE,
     ROUTES.REPORTS,
-    ROUTES.TEACHERS
+    ROUTES.TEACHERS,
+    ROUTES.LESSONS,
   ],
   [ROLES.SUPERADMIN]: ['*'],
 };
 
-export const GLOBAL_SWITCHER_HIDDEN_ROUTES = [ROUTES.BRANCHES, ROUTES.ADMINS, ROUTES.TEACHERS];
+export const GLOBAL_SWITCHER_HIDDEN_ROUTES = [ROUTES.BRANCHES, ROUTES.ADMINS, ROUTES.TEACHERS, ROUTES.LESSONS];

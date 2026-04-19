@@ -26,8 +26,9 @@
       "@constants/*": ["./src/constants/*"],
       "@types/*": ["./src/types/*"],
       "@widgets/*": ["./src/widgets/*"],
-      "@shared/*": ["./src/shared/*"]
-    },
+      "@shared/*": ["./src/shared/*"],
+      "@styles/*": ["./src/shared/styles/*"]
+    }
   },
   "include": [
     "next-env.d.ts",

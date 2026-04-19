@@ -23,7 +23,6 @@ export const subjectSchema = z.object({
   description: z.string().optional(),
 });
 
-// Генерируем тип прямо из схемы
 export type SubjectFormValues = z.infer<typeof subjectSchema>;
 
 interface SubjectFormProps {

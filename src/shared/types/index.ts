@@ -25,3 +25,11 @@ export type {
   StudentSubscription,
   AssignSubscriptionValues,
 } from './subscriptions';
+
+export type {
+  LessonStatus,
+  LessonInfo,
+  CreateIndividualLessonPayload,
+  CreateGroupLessonPayload,
+  CreateTemplatePayload,
+} from './lessons';

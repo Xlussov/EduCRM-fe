@@ -2,11 +2,13 @@ import { useQuery } from '@tanstack/react-query';
 import { api } from '@/api/axios';
 import { Teacher, } from '@/shared/types';
 
-export const useTeachers = () => {
+export const useTeachers = (branchId?: string) => {
   return useQuery({
-    queryKey: ['teachers'],
+    queryKey: ['teachers', branchId],
     queryFn: async () => {
-      const { data } = await api.get<Teacher[]>('/users/teachers');
+      const { data } = await api.get<Teacher[]>('/users/teachers', {
+        params: branchId ? { branch_id: branchId } : undefined,
+      });
       return data;
     },
   });

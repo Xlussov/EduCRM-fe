@@ -30,5 +30,5 @@ export interface Teacher {
   last_name: string;
   phone: string;
   status: string;
-  branch_id: string;
+  branches: Branch[];
 }
