@@ -4,7 +4,8 @@ import { toast } from 'sonner';
 import { 
   CreateIndividualLessonPayload, 
   CreateGroupLessonPayload, 
-  CreateTemplatePayload 
+  CreateTemplatePayload, 
+  UpdateLessonPayload
 } from '@/shared/types';
 import { getErrorMessage } from '@/shared/utils/error-handler';
 
@@ -79,6 +80,47 @@ export const useCancelLesson = () => {
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to cancel lesson'));
+    },
+  });
+};
+
+export interface UpdateLessonParams {
+  id: string;
+  data: UpdateLessonPayload;
+}
+
+export const useUpdateLesson = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({ id, data }: UpdateLessonParams) => {
+      const response = await api.patch(`/lessons/${id}`, data);
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success('Lesson updated successfully');
+      return queryClient.invalidateQueries({ queryKey: ['lessons'] });
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to update lesson'));
+    },
+  });
+};
+
+export const useDeactivateTemplate = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (templateId: string) => {
+      const response = await api.patch(`/lessons/templates/${templateId}/deactivate`, {});
+      return response.data;
+    },
+    onSuccess: () => {
+      toast.success('Template deactivated. All future lessons are cancelled.');
+      return queryClient.invalidateQueries({ queryKey: ['lessons'] });
+    },
+    onError: (error) => {
+      toast.error(getErrorMessage(error, 'Failed to deactivate template'));
     },
   });
 };

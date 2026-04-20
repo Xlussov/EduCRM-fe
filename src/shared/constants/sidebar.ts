@@ -25,8 +25,8 @@ export const sidebarPaths = [
   {
     title: 'Academics',
     items: [
-      { title: 'Lessons', url: ROUTES.LESSONS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
-      { title: 'Schedule', url: ROUTES.SCHEDULE, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
+      { title: 'Schedule', url: ROUTES.LESSONS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
+      // { title: 'Schedule', url: ROUTES.SCHEDULE, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
       { title: 'Attendance', url: ROUTES.ATTENDANCE, roles: [ROLES.SUPERADMIN, ROLES.ADMIN, ROLES.TEACHER] },
       { title: 'Reports', url: ROUTES.REPORTS, roles: [ROLES.SUPERADMIN, ROLES.ADMIN] },
     ],

@@ -15,6 +15,7 @@ export interface LessonInfo {
   teacher?: { id: string; first_name: string; last_name: string };
   student?: { id: string; first_name: string; last_name: string };
   group?: { id: string; name: string };
+  template_id?: string;
 }
 
 export interface CreateIndividualLessonPayload {
@@ -48,4 +49,12 @@ export interface CreateTemplatePayload {
   teacher_id: string;
   student_id?: string;
   group_id?: string;
+}
+
+export interface UpdateLessonPayload {
+  date: string;
+  start_time: string;
+  end_time: string;
+  subject_id: string;
+  teacher_id: string;
 }

@@ -32,4 +32,6 @@ export type {
   CreateIndividualLessonPayload,
   CreateGroupLessonPayload,
   CreateTemplatePayload,
+  UpdateLessonPayload,
 } from './lessons';
+

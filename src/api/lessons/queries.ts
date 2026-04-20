@@ -28,3 +28,14 @@ export const useLessons = ({ fromDate, toDate, teacherId, studentId, groupId }: 
     enabled: !!fromDate && !!toDate,
   });
 };
+
+export const useLessonById = (id: string) => {
+  return useQuery({
+    queryKey: ['lessons', id],
+    queryFn: async () => {
+      const { data } = await api.get<LessonInfo>(`/lessons/${id}`);
+      return data;
+    },
+    enabled: !!id,
+  });
+};

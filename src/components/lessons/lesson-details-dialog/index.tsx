@@ -4,8 +4,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/u
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { LessonInfo } from '@/shared/types';
-import { useCancelLesson } from '@/api/lessons/mutations';
-import { Calendar, Clock, BookOpen, User, Users, XCircle, Loader2 } from 'lucide-react';
+import { useCancelLesson, useDeactivateTemplate } from '@/api/lessons/mutations';
+import { Calendar, Clock, BookOpen, User, Users, XCircle, Edit, Loader2, CalendarOff } from 'lucide-react';
+import Link from 'next/link';
 
 interface Props {
   lesson: LessonInfo | null;
@@ -14,25 +15,38 @@ interface Props {
 }
 
 export const LessonDetailsDialog = ({ lesson, isOpen, onClose }: Props) => {
-  const { mutate: cancelLesson, isPending } = useCancelLesson();
+  const { mutate: cancelLesson, isPending: isCancelling } = useCancelLesson();
+  const { mutate: deactivateTemplate, isPending: isDeactivating } = useDeactivateTemplate();
 
   if (!lesson) return null;
 
-  const isGroup = !!lesson.group;
+  const isGroup = !!lesson.group; 
   const isCancelled = lesson.status === 'CANCELLED';
   const isCompleted = lesson.status === 'COMPLETED';
+  const isScheduled = lesson.status === 'SCHEDULED';
+  const hasTemplate = !!lesson.template_id;
 
-  const handleCancel = () => {
-    cancelLesson(lesson.id, {
-      onSuccess: () => {
-        onClose();
-      },
-    });
+  const isProcessing = isCancelling || isDeactivating;
+
+  const handleCancelSingle = () => {
+    cancelLesson(lesson.id, { onSuccess: onClose });
+  };
+
+  const handleDeactivateSeries = () => {
+    if (!lesson.template_id) return;
+    
+    const confirmed = window.confirm(
+      'Are you sure you want to cancel THIS and ALL FUTURE lessons in this series? This action cannot be undone.'
+    );
+    
+    if (confirmed) {
+      deactivateTemplate(lesson.template_id, { onSuccess: onClose });
+    }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={open => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
+    <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
           <div className="flex items-center justify-between pr-6">
             <DialogTitle className="text-xl">Lesson Details</DialogTitle>
@@ -45,16 +59,14 @@ export const LessonDetailsDialog = ({ lesson, isOpen, onClose }: Props) => {
         <div className="space-y-4 py-4">
           <div className="flex items-center gap-3 text-sm">
             <BookOpen className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium w-20">Subject:</span>
+            <span className="font-medium w-24">Subject:</span>
             <span>{lesson.subject?.name || 'Unknown'}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
             <User className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium w-20">Teacher:</span>
-            <span>
-              {lesson.teacher?.first_name} {lesson.teacher?.last_name}
-            </span>
+            <span className="font-medium w-24">Teacher:</span>
+            <span>{lesson.teacher?.first_name} {lesson.teacher?.last_name}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
@@ -63,40 +75,83 @@ export const LessonDetailsDialog = ({ lesson, isOpen, onClose }: Props) => {
             ) : (
               <User className="h-4 w-4 text-muted-foreground" />
             )}
-            <span className="font-medium w-20">{isGroup ? 'Group:' : 'Student:'}</span>
+            <span className="font-medium w-24">{isGroup ? 'Group:' : 'Student:'}</span>
             <span>
-              {isGroup
-                ? lesson.group?.name
-                : `${lesson.student?.first_name || ''} ${lesson.student?.last_name || ''}`.trim() ||
-                  'N/A'}
+              {isGroup 
+                ? lesson.group?.name 
+                : `${lesson.student?.first_name || ''} ${lesson.student?.last_name || ''}`.trim() || 'N/A'}
             </span>
           </div>
 
           <div className="flex items-center gap-3 text-sm pt-2 border-t">
             <Calendar className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium w-20">Date:</span>
+            <span className="font-medium w-24">Date:</span>
             <span>{lesson.date}</span>
           </div>
 
           <div className="flex items-center gap-3 text-sm">
             <Clock className="h-4 w-4 text-muted-foreground" />
-            <span className="font-medium w-20">Time:</span>
-            <span>
-              {lesson.start_time.slice(0, 5)} - {lesson.end_time.slice(0, 5)}
-            </span>
+            <span className="font-medium w-24">Time:</span>
+            <span>{lesson.start_time.slice(0, 5)} - {lesson.end_time.slice(0, 5)}</span>
           </div>
         </div>
 
-        {!isCancelled && !isCompleted && (
-          <div className="pt-4 flex justify-end border-t">
-            <Button variant="destructive" onClick={handleCancel} disabled={isPending}>
-              {isPending ? (
-                <Loader2 className=" h-4 w-4 animate-spin" />
-              ) : (
-                <XCircle className=" h-4 w-4" />
-              )}
-              Cancel Lesson
+        {isScheduled && (
+          <div className="pt-6 flex flex-wrap justify-end gap-3 border-t">
+            <Button 
+              variant="outline" 
+              asChild
+              disabled={isProcessing}
+            >
+              <Link href={`/lessons/edit/${lesson.id}`}>
+                <Edit className="h-4 w-4" />
+                Edit
+              </Link>
             </Button>
+            
+            {hasTemplate ? (
+              <>
+                <Button 
+                  variant="outline" 
+                  className="text-destructive hover:bg-destructive/10 hover:text-destructive border-destructive/30"
+                  onClick={handleCancelSingle} 
+                  disabled={isProcessing}
+                >
+                  {isCancelling ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <XCircle className="h-4 w-4" />
+                  )}
+                  Cancel Only This
+                </Button>
+
+                <Button 
+                  variant="destructive" 
+                  onClick={handleDeactivateSeries} 
+                  disabled={isProcessing}
+                >
+                  {isDeactivating ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <CalendarOff className="h-4 w-4" />
+                  )}
+                  Cancel Entire Series
+                </Button>
+              </>
+            ) : (
+              <Button 
+                variant="destructive" 
+                onClick={handleCancelSingle} 
+                disabled={isProcessing}
+              >
+                {isCancelling ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <XCircle className="h-4 w-4" />
+                )}
+                Cancel Lesson
+              </Button>
+            )}
           </div>
         )}
       </DialogContent>
