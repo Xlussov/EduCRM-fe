@@ -6,8 +6,21 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { format, parse } from 'date-fns';
 import { CalendarIcon, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
 import { Input } from '@/components/ui/input';
@@ -16,20 +29,20 @@ import { useUpdateLesson } from '@/api/lessons/mutations';
 import { useActiveSubjects } from '@/api/subjects/queries';
 import { useTeachers } from '@/api/teachers/queries';
 import { LessonInfo } from '@/shared/types';
+import { TimePicker } from '@/components/ui/time-picker';
 
-export const editLessonSchema = z.object({
-  subject_id: z.string().min(1, 'Required'),
-  teacher_id: z.string().min(1, 'Required'),
-  date: z.date({ message: "A date of lesson is required." }),
-  start_time: z.string().min(1, 'Required'),
-  end_time: z.string().min(1, 'Required'),
-}).refine(
-  (data) => data.end_time > data.start_time,
-  {
-    message: "End time must be after start time",
-    path: ["end_time"],
-  }
-);
+export const editLessonSchema = z
+  .object({
+    subject_id: z.string().min(1, 'Required'),
+    teacher_id: z.string().min(1, 'Required'),
+    date: z.date({ message: 'A date of lesson is required.' }),
+    start_time: z.string().min(1, 'Required'),
+    end_time: z.string().min(1, 'Required'),
+  })
+  .refine(data => data.end_time > data.start_time, {
+    message: 'End time must be after start time',
+    path: ['end_time'],
+  });
 
 type FormValues = z.infer<typeof editLessonSchema>;
 
@@ -50,8 +63,8 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
       subject_id: lesson.subject_id,
       teacher_id: lesson.teacher_id,
       date: parse(lesson.date, 'yyyy-MM-dd', new Date()),
-      start_time: lesson.start_time.slice(0, 5), 
-      end_time: lesson.end_time.slice(0, 5), 
+      start_time: lesson.start_time.slice(0, 5),
+      end_time: lesson.end_time.slice(0, 5),
     },
   });
 
@@ -60,7 +73,7 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
       ...data,
       date: format(data.date, 'yyyy-MM-dd'),
     };
-    
+
     mutate({ id: lesson.id, data: payload }, { onSuccess });
   };
 
@@ -74,12 +87,22 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Subject</FormLabel>
-                <Select disabled={isPending || isLoadingSubjects} onValueChange={field.onChange} value={field.value}>
+                <Select
+                  disabled={isPending || isLoadingSubjects}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <FormControl>
-                    <SelectTrigger><SelectValue placeholder="Select a subject" /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a subject" />
+                    </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {subjects?.map((s) => <SelectItem key={s.id} value={s.id}>{s.name}</SelectItem>)}
+                    {subjects?.map(s => (
+                      <SelectItem key={s.id} value={s.id}>
+                        {s.name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -92,12 +115,22 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Teacher</FormLabel>
-                <Select disabled={isPending || isLoadingTeachers} onValueChange={field.onChange} value={field.value}>
+                <Select
+                  disabled={isPending || isLoadingTeachers}
+                  onValueChange={field.onChange}
+                  value={field.value}
+                >
                   <FormControl>
-                    <SelectTrigger><SelectValue placeholder="Select a teacher" /></SelectTrigger>
+                    <SelectTrigger>
+                      <SelectValue placeholder="Select a teacher" />
+                    </SelectTrigger>
                   </FormControl>
                   <SelectContent>
-                    {teachers?.map((t) => <SelectItem key={t.id} value={t.id}>{t.first_name} {t.last_name}</SelectItem>)}
+                    {teachers?.map(t => (
+                      <SelectItem key={t.id} value={t.id}>
+                        {t.first_name} {t.last_name}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
                 <FormMessage />
@@ -116,11 +149,14 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
                 <PopoverTrigger asChild>
                   <FormControl>
                     <Button
-                      variant={"outline"}
-                      className={cn("w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}
+                      variant={'outline'}
+                      className={cn(
+                        'w-full pl-3 text-left font-normal',
+                        !field.value && 'text-muted-foreground',
+                      )}
                       disabled={isPending}
                     >
-                      {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                      {field.value ? format(field.value, 'PPP') : <span>Pick a date</span>}
                       <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                     </Button>
                   </FormControl>
@@ -146,7 +182,9 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Start Time</FormLabel>
-                <FormControl><Input type="time" disabled={isPending} {...field} /></FormControl>
+                <FormControl>
+                  <TimePicker value={field.value} onChange={field.onChange} disabled={isPending} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
@@ -157,7 +195,9 @@ export const EditLessonForm = ({ lesson, onSuccess, onCancel }: Props) => {
             render={({ field }) => (
               <FormItem>
                 <FormLabel>End Time</FormLabel>
-                <FormControl><Input type="time" disabled={isPending} {...field} /></FormControl>
+                <FormControl>
+                  <TimePicker value={field.value} onChange={field.onChange} disabled={isPending} />
+                </FormControl>
                 <FormMessage />
               </FormItem>
             )}
