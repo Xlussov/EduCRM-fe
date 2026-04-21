@@ -111,6 +111,18 @@ export const CalendarView = ({
         onNavigate={onNavigate}
         formats={{
           dayFormat: (date: Date, culture) => localizer.format(date, 'dd EEE', culture as string),
+
+          timeGutterFormat: (date: Date, culture) =>
+            localizer.format(date, 'HH:mm', culture as string),
+
+          eventTimeRangeFormat: ({ start, end }: { start: Date; end: Date }, culture) =>
+            `${localizer.format(start, 'HH:mm', culture as string)} - ${localizer.format(end, 'HH:mm', culture as string)}`,
+
+          selectRangeFormat: ({ start, end }: { start: Date; end: Date }, culture) =>
+            `${localizer.format(start, 'HH:mm', culture as string)} - ${localizer.format(end, 'HH:mm', culture as string)}`,
+
+          agendaTimeRangeFormat: ({ start, end }: { start: Date; end: Date }, culture) =>
+            `${localizer.format(start, 'HH:mm', culture as string)} - ${localizer.format(end, 'HH:mm', culture as string)}`,
         }}
       />
     </div>

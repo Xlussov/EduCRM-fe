@@ -35,3 +35,4 @@ export type {
   UpdateLessonPayload,
 } from './lessons';
 
+export type { AttendanceRecord, UpdateAttendancePayload } from './attendance';

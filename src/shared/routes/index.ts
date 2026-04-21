@@ -21,9 +21,12 @@ export const ROUTES = {
 export const ALLOWED_PATHS: Record<Role, string[]> = {
   [ROLES.TEACHER]: [
     ROUTES.ROOT,
-    ROUTES.MY_SCHEDULE,
+    // ROUTES.MY_SCHEDULE,
+    ROUTES.SCHEDULE,
     ROUTES.ATTENDANCE,
-    ROUTES.MY_GROUPS,
+    ROUTES.LESSONS,
+
+    // ROUTES.MY_GROUPS,
   ],
   [ROLES.ADMIN]: [
     ROUTES.ROOT,
