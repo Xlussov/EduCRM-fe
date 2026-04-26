@@ -2,7 +2,7 @@
 
 import { useParams, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
-import { ArrowLeft, Loader2 } from 'lucide-react';
+import { ChevronLeft, Loader2 } from 'lucide-react';
 import { EditLessonForm } from '@/components/lessons/edit-lesson-form';
 import { useLessonById } from '@/api/lessons/queries';
 
@@ -19,9 +19,9 @@ export default function EditLesson() {
         <Button 
           variant="outline" 
           size="icon" 
-          onClick={() => router.push('/lessons')}
+          onClick={() => router.back()}
         >
-          <ArrowLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Edit Lesson</h2>

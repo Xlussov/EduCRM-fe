@@ -1,6 +1,5 @@
+import Dashboard from '@/widgets/statistics/dashboard';
 
 export default function Page() {
-  return (
-    <div>page</div>
-  )
+  return <Dashboard />;
 }

@@ -1,8 +1,7 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { TeacherForm, TeacherFormValues } from '@/components/teacher-form';
 import { useActiveBranches } from '@/api/branches/queries';
@@ -10,6 +9,7 @@ import { useTeacherById } from '@/api/teachers/queries';
 import { useUpdateTeacher, useArchiveTeacher, useUnarchiveTeacher } from '@/api/teachers/mutations';
 
 export default function EditTeacher() {
+  const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
@@ -39,10 +39,8 @@ export default function EditTeacher() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4 mb-8">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/teachers">
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Edit Teacher</h2>

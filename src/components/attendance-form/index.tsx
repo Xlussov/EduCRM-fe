@@ -46,8 +46,6 @@ export const AttendanceForm = ({ lessonId, initialData }: AttendanceFormProps) =
     name: "attendance",
   });
 
-  const { isDirty } = form.formState;
-
   useEffect(() => {
     form.reset({ attendance: initialData });
   }, [initialData, form]);
@@ -126,14 +124,14 @@ export const AttendanceForm = ({ lessonId, initialData }: AttendanceFormProps) =
         </div>
 
         <div className="flex items-center justify-end gap-4 pt-4">
-          {isDirty && (
+          {form.formState.isDirty && (
             <span className="text-sm font-medium text-muted-foreground animate-pulse">
               Unsaved changes
             </span>
           )}
-          <Button type="submit" disabled={isPending || !isDirty}>
+          <Button type="submit" disabled={isPending}>
             {isPending && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            {isDirty ? "Save Attendance" : "No changes to save"}
+            Save Attendance
           </Button>
         </div>
       </form>

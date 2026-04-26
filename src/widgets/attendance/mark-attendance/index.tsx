@@ -1,7 +1,7 @@
 'use client';
 
 import { useParams, useRouter } from 'next/navigation';
-import { Loader2, ArrowLeft } from 'lucide-react';
+import { Loader2, ChevronLeft } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useLessonAttendance } from '@/api/attendance/queries';
 import { AttendanceForm } from '@/components/attendance-form';
@@ -13,19 +13,20 @@ export default function MarkAttendance() {
 
   const { data: attendanceData, isLoading } = useLessonAttendance(lessonId);
 
-  const formattedInitialData = attendanceData?.map(record => ({
-    student_id: record.student_id,
-    first_name: record.first_name,
-    last_name: record.last_name,
-    is_present: record.is_present,
-    notes: record.notes || '',
-  })) || [];
+    const formattedInitialData = attendanceData?.map(record => ({
+      student_id: record.student_id,
+      first_name: record.first_name,
+      last_name: record.last_name,
+      is_present: record.is_present ?? false ,
+      notes: record.notes || '',
+    })) || [];
+  console.log(formattedInitialData);
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4 mb-6">
         <Button variant="outline" size="icon" onClick={() => router.back()}>
-          <ArrowLeft className="h-4 w-4" />
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <div>
           <h2 className="text-3xl font-bold tracking-tight">Lesson Attendance</h2>

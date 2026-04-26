@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useCreateGroupLesson } from '@/api/lessons/mutations';
 import { useActiveSubjects } from '@/api/subjects/queries';
@@ -74,7 +73,7 @@ export const GroupLessonForm = ({ branchId, onSuccess }: Props) => {
   const { data: subjects, isLoading: isLoadingSubjects } = useActiveSubjects(selectedBranchId);
   const { data: teachers, isLoading: isLoadingTeachers } = useTeachers(selectedBranchId);
   const { data: groups, isLoading: isLoadingGroups } = useGroups(selectedBranchId);
-  const { mutate, isPending } = useCreateGroupLesson(selectedBranchId);
+  const { mutate, isPending } = useCreateGroupLesson();
 
   const onSubmit = (data: FormValues) => {
     const formattedDate = format(data.date, 'yyyy-MM-dd');

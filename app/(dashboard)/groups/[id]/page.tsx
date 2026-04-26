@@ -1,7 +1,5 @@
-import GroupStudents from "@/widgets/groups/manage-group";
+import { GroupInfo } from "@/widgets/groups/group-info";
 
-export default function Page() {  
-  return ( 
-    <GroupStudents/>
-   )
+export default function Page() {
+  return <GroupInfo/>;
 }

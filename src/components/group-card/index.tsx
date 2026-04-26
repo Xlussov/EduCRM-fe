@@ -43,7 +43,7 @@ export const GroupCard: FC<Props> = ({ group }) => {
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
 
             <DropdownMenuItem asChild>
-              <Link href={`/groups/${group.id}`} className="flex items-center cursor-pointer">
+              <Link href={`/groups/${group.id}/manage`} className="flex items-center cursor-pointer">
                 <Eye className="mr-2 h-4 w-4" />
                 Manage group
               </Link>

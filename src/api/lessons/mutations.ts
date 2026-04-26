@@ -8,9 +8,12 @@ import {
   UpdateLessonPayload
 } from '@/shared/types';
 import { getErrorMessage } from '@/shared/utils/error-handler';
+import { useRouter } from 'next/navigation';
+import { ROUTES } from '@/shared/routes';
 
-export const useCreateIndividualLesson = (branchId: string) => {
+export const useCreateIndividualLesson = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: async (data: CreateIndividualLessonPayload) => {
@@ -19,7 +22,8 @@ export const useCreateIndividualLesson = (branchId: string) => {
     },
     onSuccess: () => {
       toast.success('Individual lesson scheduled successfully');
-      return queryClient.invalidateQueries({ queryKey: ['lessons', branchId] });
+      router.push(ROUTES.LESSONS);
+      return queryClient.invalidateQueries({ queryKey: ['lessons'] });
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to schedule lesson'));
@@ -27,9 +31,9 @@ export const useCreateIndividualLesson = (branchId: string) => {
   });
 };
 
-export const useCreateGroupLesson = (branchId: string) => {
+export const useCreateGroupLesson = () => {
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   return useMutation({
     mutationFn: async (data: CreateGroupLessonPayload) => {
       const response = await api.post('/lessons/group', data);
@@ -37,7 +41,8 @@ export const useCreateGroupLesson = (branchId: string) => {
     },
     onSuccess: () => {
       toast.success('Group lesson scheduled successfully');
-      return queryClient.invalidateQueries({ queryKey: ['lessons', branchId] });
+      router.push(ROUTES.LESSONS);
+      return queryClient.invalidateQueries({ queryKey: ['lessons'] });
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to schedule group lesson'));
@@ -45,9 +50,9 @@ export const useCreateGroupLesson = (branchId: string) => {
   });
 };
 
-export const useCreateLessonTemplate = (branchId: string) => {
+export const useCreateLessonTemplate = () => {
   const queryClient = useQueryClient();
-
+  const router = useRouter();
   return useMutation({
     mutationFn: async (data: CreateTemplatePayload) => {
       const response = await api.post('/lessons/templates', data);
@@ -55,10 +60,11 @@ export const useCreateLessonTemplate = (branchId: string) => {
     },
     onSuccess: (data) => {
       toast.success(`Template created. ${data.created_lessons_count || ''} lessons scheduled.`);
+      router.push(ROUTES.LESSONS);
       if (data.conflicts && data.conflicts.length > 0) {
         toast.warning(`${data.conflicts.length} conflicts detected and skipped.`);
       }
-      return queryClient.invalidateQueries({ queryKey: ['lessons', branchId] });
+      return queryClient.invalidateQueries({ queryKey: ['lessons'] });
     },
     onError: (error) => {
       toast.error(getErrorMessage(error, 'Failed to create lesson template'));
@@ -91,6 +97,7 @@ export interface UpdateLessonParams {
 
 export const useUpdateLesson = () => {
   const queryClient = useQueryClient();
+  const router = useRouter();
 
   return useMutation({
     mutationFn: async ({ id, data }: UpdateLessonParams) => {
@@ -99,6 +106,7 @@ export const useUpdateLesson = () => {
     },
     onSuccess: () => {
       toast.success('Lesson updated successfully');
+      router.push(ROUTES.LESSONS);
       return queryClient.invalidateQueries({ queryKey: ['lessons'] });
     },
     onError: (error) => {

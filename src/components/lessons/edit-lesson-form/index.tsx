@@ -23,7 +23,6 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useUpdateLesson } from '@/api/lessons/mutations';
 import { useActiveSubjects } from '@/api/subjects/queries';

@@ -3,13 +3,14 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Button } from '@/components/ui/button';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { IndividualLessonForm } from '@/components/lessons/individual-lesson-form';
 import { GroupLessonForm } from '@/components/lessons/group-lesson-form';
 import { TemplateLessonForm } from '@/components/lessons/template-lesson-form';
 import { useBranchContext } from '@/providers/branch-provider';
+import { useRouter } from 'next/navigation';
 
 export const CreateLesson = () => {
+  const router = useRouter();
   const { currentBranchId } = useBranchContext();
 
   if (!currentBranchId) {
@@ -19,10 +20,8 @@ export const CreateLesson = () => {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/lessons">
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <h2 className="text-3xl font-bold tracking-tight">Schedule New Lesson</h2>
       </div>

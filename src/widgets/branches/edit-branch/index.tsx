@@ -1,14 +1,14 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { BranchForm, BranchFormValues } from '@/components/branch-form';
 import { useUpdateBranch, useArchiveBranch, useUnarchiveBranch } from '@/api/branches/mutations';
 import { useBranchById } from '@/api/branches/queries';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 import { ChevronLeft } from 'lucide-react';
 
 export default function EditBranch() {
+  const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
@@ -25,7 +25,7 @@ export default function EditBranch() {
     archiveBranch.mutate();
   };
 
-    const onUnarchive = () => {
+  const onUnarchive = () => {
     unarchiveBranch.mutate();
   };
 
@@ -36,10 +36,8 @@ export default function EditBranch() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/branches">
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <h2 className="text-3xl font-bold tracking-tight">Edit Branch</h2>
       </div>

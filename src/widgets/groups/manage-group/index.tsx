@@ -1,9 +1,8 @@
 "use client";
 
 import { useMemo } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { ChevronLeft } from "lucide-react";
 import { useGroupById, useGroupStudents } from "@/api/groups/queries";
 import { useActiveStudents } from "@/api/students/queries";
@@ -11,6 +10,7 @@ import { ManageGroupStudents } from "@/components/manage-group-students";
 import { Student } from "@/shared/types";
 
 export default function GroupStudents() {
+  const router = useRouter();
   const params = useParams();
   const id = params.id as string;
 
@@ -47,10 +47,8 @@ export default function GroupStudents() {
   return (
     <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex items-center gap-4">
-        <Button variant="outline" size="icon" asChild>
-          <Link href={`/groups`}>
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <div>
           <h2 className="text-3xl font-bold tracking-tight">{group.name}</h2>

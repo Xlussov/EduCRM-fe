@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { MoreHorizontal, Phone, Building2, Pencil } from 'lucide-react';
+import { MoreHorizontal, Phone, Building2, Pencil, User, BarChart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -10,32 +10,19 @@ import {
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
+  DropdownMenuSeparator,
 } from '@/components/ui/dropdown-menu';
 import { FC } from 'react';
 import { ArchivedPlug } from '../archived-plug';
-import { Teacher, Admin } from '@/shared/types/user';
+import { User as UserType } from '@/shared/types';
 
 type Props = {
-  user: Teacher | Admin;
+  user: UserType;
   path: 'teachers' | 'admins';
 };
 
 export const UserCard: FC<Props> = ({ user, path }) => {
   const isArchived = user.status === 'ARCHIVED';
-
-  const renderBranches = () => {
-    if ('branches' in user) {
-      return user.branches && user.branches.length > 0
-        ? user.branches.map(b => b.name).join(', ')
-        : 'No branches assigned';
-    }
-    
-    if ('branch' in user && user.branch) {
-      return (user.branch as { name: string }).name || 'No branch assigned';
-    }
-
-    return 'No branch assigned';
-  };
 
   return (
     <Card className="flex flex-col justify-between">
@@ -55,6 +42,17 @@ export const UserCard: FC<Props> = ({ user, path }) => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Actions</DropdownMenuLabel>
+            {path === 'teachers' && (
+              <DropdownMenuItem asChild>
+                <Link
+                  href={`/${path}/${user.id}/statistics`}
+                  className="flex items-center cursor-pointer"
+                >
+                  <BarChart className="mr-2 h-4 w-4" />
+                  View Statistics
+                </Link>
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem asChild>
               <Link href={`/${path}/edit/${user.id}`} className="flex items-center cursor-pointer">
                 <Pencil className="mr-2 h-4 w-4" />
@@ -72,9 +70,7 @@ export const UserCard: FC<Props> = ({ user, path }) => {
           </div>
           <div className="flex items-start gap-2">
             <Building2 className="h-4 w-4 opacity-70 mt-0.5" />
-            <span className="line-clamp-2">
-              {renderBranches()}
-            </span>
+            <span className="line-clamp-2">{user.branches.map(b => b.name).join(', ')}</span>
           </div>
         </div>
       </CardContent>

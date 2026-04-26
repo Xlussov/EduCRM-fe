@@ -26,7 +26,7 @@ import {
   ComboboxValue,
   useComboboxAnchor,
 } from '@/components/ui/combobox';
-import { BranchInfo, Admin } from '@/shared/types';
+import { BranchInfo, User } from '@/shared/types';
 import { Loader2 } from 'lucide-react';
 
 const baseSchema = z.object({
@@ -52,7 +52,7 @@ const getValidationSchema = (isEditMode: boolean) =>
 
 interface AdminFormProps {
   branches: BranchInfo[];
-  initialData?: Admin;
+  initialData?: User;
   onSubmit: (data: AdminFormValues) => void;
   onArchive?: () => void;
   onUnarchive?: () => void;

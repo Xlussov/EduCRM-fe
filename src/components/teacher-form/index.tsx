@@ -27,14 +27,13 @@ import {
   ComboboxValue,
   useComboboxAnchor,
 } from '@/components/ui/combobox';
-import { BranchInfo, Teacher } from '@/shared/types';
+import { BranchInfo, User } from '@/shared/types';
 
 const baseSchema = z.object({
   first_name: z.string().min(1, 'First name is required'),
   last_name: z.string().min(1, 'Last name is required'),
   phone: z.string().min(1, 'Phone is required'),
   password: z.string().optional(),
-  // Изменено на массив для мульти-селекта
   branch_ids: z.array(z.string()).min(1, 'Select at least one branch'),
 });
 
@@ -53,7 +52,7 @@ const getValidationSchema = (isEditMode: boolean) =>
 
 interface TeacherFormProps {
   branches: BranchInfo[];
-  initialData?: Teacher;
+  initialData?: User;
   onSubmit: (data: TeacherFormValues) => void;
   onArchive?: () => void;
   onUnarchive?: () => void;

@@ -1,14 +1,14 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { SubjectForm, SubjectFormValues } from '@/components/subject-form';
 import { useUpdateSubject, useArchiveSubject, useUnarchiveSubject } from '@/api/subjects/mutations';
 import { useSubjectById } from '@/api/subjects/queries';
 import { ChevronLeft } from 'lucide-react';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
 export default function EditSubject() {
+  const router = useRouter();
   const params = useParams();
   const subjectId = params.id as string;
 
@@ -46,10 +46,8 @@ export default function EditSubject() {
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center space-x-4 mb-6">
-        <Button variant="outline" size="icon" asChild>
-          <Link href="/subjects">
-            <ChevronLeft className="h-4 w-4" />
-          </Link>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
         </Button>
         <h2 className="text-3xl font-bold tracking-tight">Edit Subject</h2>
       </div>

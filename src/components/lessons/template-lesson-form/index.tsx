@@ -1,6 +1,6 @@
 'use client';
 
-import React, { Fragment } from 'react';
+import { Fragment } from 'react';
 import { z } from 'zod';
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -24,7 +24,6 @@ import {
 } from '@/components/ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import {
   Combobox,
@@ -128,7 +127,7 @@ export const TemplateLessonForm = ({ branchId, onSuccess }: Props) => {
   const { data: teachers, isLoading: isLoadingTeachers } = useTeachers(selectedBranchId);
   const { data: students, isLoading: isLoadingStudents } = useStudents(selectedBranchId);
   const { data: groups, isLoading: isLoadingGroups } = useGroups(selectedBranchId);
-  const { mutate, isPending } = useCreateLessonTemplate(selectedBranchId);
+  const { mutate, isPending } = useCreateLessonTemplate();
 
   const onSubmit = (data: FormValues) => {
     const payload = {
