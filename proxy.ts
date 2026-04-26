@@ -1,24 +1,24 @@
-import { ALLOWED_PATHS, ROUTES } from '@/shared/routes';
+import { ALLOWED_PATHS, DENIED_PATHS, ROUTES } from '@/shared/routes';
 import { Role, ROLES } from '@/shared/types';
 import { decodeJwtPayload } from '@/shared/utils/jwt';
-import { NextResponse } from 'next/server'
-import type { NextRequest } from 'next/server'
+import { NextResponse } from 'next/server';
+import type { NextRequest } from 'next/server';
 
 export default function proxy(request: NextRequest) {
-  const token = request.cookies.get('access_token')?.value
-  const path = request.nextUrl.pathname
-  const isAuthPage = path.startsWith(ROUTES.LOGIN)
+  const token = request.cookies.get('access_token')?.value;
+  const path = request.nextUrl.pathname;
+  const isAuthPage = path.startsWith(ROUTES.LOGIN);
 
   if (path === '/') {
-    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url))
+    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url));
   }
 
   if (!token && !isAuthPage) {
-    return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url))
+    return NextResponse.redirect(new URL(ROUTES.LOGIN, request.url));
   }
 
   if (token && isAuthPage) {
-    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url))
+    return NextResponse.redirect(new URL(ROUTES.ROOT, request.url));
   }
 
   if (token && !isAuthPage) {
@@ -37,15 +37,23 @@ export default function proxy(request: NextRequest) {
     if (userRole === ROLES.SUPERADMIN) {
       isAllowed = true;
     } else {
-      const allowedPaths = ALLOWED_PATHS[userRole];
-      
-      isAllowed = allowedPaths.some((allowedPath) => {
-        if (path === allowedPath) return true;
-        
-        if (allowedPath !== '/' && path.startsWith(`${allowedPath}/`)) return true;
-        
-        return false;
+      const allowedPaths = ALLOWED_PATHS[userRole] || [];
+      const deniedPaths = DENIED_PATHS[userRole] || [];
+
+      const isDenied = deniedPaths.some((denied) => {
+        if (denied.exact) {
+          return path === denied.path || path === `${denied.path}/`;
+        }
+        return path.startsWith(`${denied.path}/`) || path === denied.path;
       });
+
+      if (!isDenied) {
+        isAllowed = allowedPaths.some((allowedPath) => {
+          if (path === allowedPath) return true;
+          if (allowedPath !== '/' && path.startsWith(`${allowedPath}/`)) return true;
+          return false;
+        });
+      }
     }
 
     if (!isAllowed) {
@@ -53,11 +61,11 @@ export default function proxy(request: NextRequest) {
     }
   }
 
-  return NextResponse.next()
+  return NextResponse.next();
 }
 
 export const config = {
   matcher: [
     '/((?!api|_next/static|_next/image|favicon.ico).*)',
   ],
-}
+};

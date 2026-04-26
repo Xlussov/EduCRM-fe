@@ -3,8 +3,7 @@ import { ROLES, Role } from '../types/roles';
 export const ROUTES = {
   ROOT: '/dashboard',
   LOGIN: '/login',
-  MY_SCHEDULE: '/my-schedule',
-  MY_GROUPS: '/my-groups',
+  STATISTICS: '/statistics', // Новый роут
   BRANCHES: '/branches',
   SUBJECTS: '/subjects',
   STUDENTS: '/students',
@@ -21,12 +20,11 @@ export const ROUTES = {
 export const ALLOWED_PATHS: Record<Role, string[]> = {
   [ROLES.TEACHER]: [
     ROUTES.ROOT,
-    // ROUTES.MY_SCHEDULE,
-    ROUTES.SCHEDULE,
-    ROUTES.ATTENDANCE,
     ROUTES.LESSONS,
-
-    // ROUTES.MY_GROUPS,
+    ROUTES.ATTENDANCE,
+    ROUTES.STATISTICS,
+    ROUTES.STUDENTS,
+    ROUTES.GROUPS,
   ],
   [ROLES.ADMIN]: [
     ROUTES.ROOT,
@@ -42,6 +40,19 @@ export const ALLOWED_PATHS: Record<Role, string[]> = {
     ROUTES.LESSONS,
   ],
   [ROLES.SUPERADMIN]: ['*'],
+};
+
+export type DeniedPath = { path: string; exact: boolean };
+
+export const DENIED_PATHS: Partial<Record<Role, DeniedPath[]>> = {
+  [ROLES.TEACHER]: [
+    { path: ROUTES.STUDENTS, exact: true },
+    { path: ROUTES.GROUPS, exact: true },
+    { path: `${ROUTES.STUDENTS}/edit`, exact: false },
+    { path: `${ROUTES.STUDENTS}/create`, exact: false },
+    { path: `${ROUTES.GROUPS}/edit`, exact: false },
+    { path: `${ROUTES.GROUPS}/create`, exact: false },
+  ],
 };
 
 export const GLOBAL_SWITCHER_HIDDEN_ROUTES = [ROUTES.BRANCHES, ROUTES.ADMINS, ROUTES.TEACHERS, ROUTES.LESSONS];
