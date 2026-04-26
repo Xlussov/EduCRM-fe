@@ -45,6 +45,9 @@ This project uses the Next.js `standalone` output feature to drastically reduce 
 ## Cross-Origin Resource Sharing (CORS)
 Ensure that the backend is configured to accept requests from `http://localhost:3000` (or your specific production domain) to prevent CORS policy errors during client-side fetching.
 
+## License
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 ---
 
 © 2026 Danil Xlussov
