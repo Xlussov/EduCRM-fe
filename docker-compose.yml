@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build: .
+    container_name: educrm_frontend
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NEXT_PUBLIC_API_URL=http://localhost:8080
+      - API_URL=http://host.docker.internal:8080

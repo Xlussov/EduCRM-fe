@@ -1,6 +1,6 @@
 'use client';
 
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useStudentById } from '@/api/students/queries';
 import { Button } from '@/components/ui/button';
@@ -13,6 +13,7 @@ import { useUser } from '@/api/auth/queries';
 import { ROLES } from '@/shared/types';
 
 export default function StudentInfoPage() {
+  const router = useRouter()
   const params = useParams();
   const id = params.id as string;
 
@@ -28,11 +29,9 @@ export default function StudentInfoPage() {
     <div className="flex-1 space-y-6 p-8 pt-6">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button variant="outline" size="icon" asChild>
-            <Link href="/students">
-              <ChevronLeft className="h-4 w-4" />
-            </Link>
-          </Button>
+        <Button variant="outline" size="icon" onClick={() => router.back()}>
+          <ChevronLeft className="h-4 w-4" />
+        </Button>
           <div className="flex items-center gap-3">
             <h2 className="text-3xl font-bold tracking-tight">
               {student.first_name} {student.last_name}
