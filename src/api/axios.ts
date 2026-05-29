@@ -2,8 +2,10 @@ import { ROUTES } from '@/shared/routes';
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
 import Cookies from 'js-cookie';
 
+const API_URL = process.env.NEXT_PUBLIC_BACKEND_URL || 'http://localhost:8080';
+
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080/api/v1',
+  baseURL: API_URL + '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },

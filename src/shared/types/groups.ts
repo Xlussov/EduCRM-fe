@@ -10,7 +10,6 @@ export type Group = {
 };
 
 
-// todo add status to group details in backend
 export type GroupDetails = {
   id: string;
   name: string;
