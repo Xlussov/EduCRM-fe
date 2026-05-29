@@ -1,4 +1,3 @@
-
 export const NavUserSkeleton = () => {
   return (
     <div className="flex h-12 items-center space-x-4 p-2">
