@@ -16,7 +16,7 @@ cp .env.example .env.local
 ```
 Ensure the API URL points to your running backend instance:
 ```env
-NEXT_PUBLIC_API_URL=http://localhost:8080
+NEXT_PUBLIC_BACKEND_URL=http://localhost:8080
 ```
 
 ## Running the Application
